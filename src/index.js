@@ -103,34 +103,34 @@ function renderToy(toy){
     toyDiv.dataset.id = toy.id
 
     //////// EDIT FORM ///////////////
-    // const editFormDiv = document.createElement("div")
-    // editFormDiv.className = "edit-form-div"
+    const editFormDiv = document.createElement("div")
+    editFormDiv.className = "edit-form-div"
 
-    // const editForm = document.createElement("form")
-    // editForm.className = "edit-form"
+    const editForm = document.createElement("form")
+    editForm.className = "edit-form"
 
-    // const heading = document.createElement("h3")
-    // heading.textContent = "Edit This Toy!"
+    const heading = document.createElement("h3")
+    heading.textContent = "Edit This Toy!"
 
-    // const editName = document.createElement("input")
-    // editName.type = "text"
-    // editName.name = "name"
-    // editName.value = toy.name
-    // editName.classList.add('input-text', 'small')
+    const editName = document.createElement("input")
+    editName.type = "text"
+    editName.name = "name"
+    editName.value = toy.name
+    editName.classList.add('input-text', 'small')
 
-    // const editImage = document.createElement("input")
-    // editImage.type = "text"
-    // editImage.name = "image"
-    // editImage.value = toy.image
-    // editImage.classList.add('input-text', 'small')
+    const editImage = document.createElement("input")
+    editImage.type = "text"
+    editImage.name = "image"
+    editImage.value = toy.image
+    editImage.classList.add('input-text', 'small')
 
-    // const editSubmit = document.createElement("input")
-    // editSubmit.type = "submit"
-    // editSubmit.name = "submit"
-    // editSubmit.value = "Save"
+    const editSubmit = document.createElement("input")
+    editSubmit.type = "submit"
+    editSubmit.name = "submit"
+    editSubmit.value = "Save"
 
-    // editForm.append(heading, editName, editImage, editSubmit)
-    // editFormDiv.append(editForm)
+    editForm.append(heading, editName, editImage, editSubmit)
+    editFormDiv.append(editForm)
     /////////////////////////////////////
     const toyName = document.createElement('h2')
     toyName.textContent = `${toy.name}`
@@ -146,9 +146,9 @@ function renderToy(toy){
     likeBtn.textContent = "Like <3"
     likeBtn.className = "like-btn"
 
-    // const editBtn = document.createElement('button')
-    // editBtn.textContent = "Edit"
-    // editBtn.className = "edit-btn"
+    const editBtn = document.createElement('button')
+    editBtn.textContent = "Edit"
+    editBtn.className = "edit-btn"
     
     const deleteBtn = document.createElement('button')
     deleteBtn.textContent = "Delete 😢"
@@ -156,9 +156,9 @@ function renderToy(toy){
 
     const buttonDiv = document.createElement("div")
     buttonDiv.className = "button-div"
-    // editFormDiv, buttonDiv
-    // buttonDiv.append(likeBtn, editBtn, deleteBtn)
-    toyDiv.append(toyName, toyImg, toyP, likeBtn,deleteBtn)
+    
+    buttonDiv.append(likeBtn, editBtn, deleteBtn)
+    toyDiv.append(editFormDiv, toyName, toyImg, toyP, buttonDiv)
     toyCollection.append(toyDiv)
 }
 

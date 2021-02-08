@@ -44,7 +44,7 @@ function openEditForm(e) {
 
   editDiv.style.transform = editDiv.style.transform !== open ? open : closed
 }
-
+ 
 
 function increaseLikes(e) {
   const card = e.target.closest('.card')

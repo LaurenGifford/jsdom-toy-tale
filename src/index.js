@@ -30,11 +30,21 @@ function handleClicks (e) {
     case (e.target.className === "delete-btn"):
       deleteToy(e)
       break
-    // case (e.target.className === "edit-btn"):
-    //   editToy(e)
-    //   break
+    case (e.target.className === "edit-btn"):
+      openEditForm(e)
+      break
   }
 }
+
+function openEditForm(e) {
+  const card = e.target.closest('.card')
+  let editDiv = card.querySelector('.edit-form-div')
+  const open = "rotateX(0deg)"
+  const closed = "rotateX(90deg)"
+
+  editDiv.style.transform = editDiv.style.transform !== open ? open : closed
+}
+
 
 function increaseLikes(e) {
   const card = e.target.closest('.card')

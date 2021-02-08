@@ -3,7 +3,7 @@ const newToyForm = document.querySelector('.add-toy-form')
 const addBtn = document.querySelector("#new-toy-btn");
 const toyFormContainer = document.querySelector(".container");
 const fetchURL = 'http://localhost:3000/toys'
-
+// const sortDiv = document.querySelector('.sort')
 
 
 let addToy = false;
@@ -18,12 +18,30 @@ addBtn.addEventListener("click", () => {
   }
 });
 
-
+window.addEventListener('load', makeDropdown)
 newToyForm.addEventListener('submit', createToy)
 
 toyCollection.addEventListener('submit', editToy)
 
 toyCollection.addEventListener('click', handleClicks)
+
+document.body.addEventListener('change', sortToys)
+
+
+
+function sortToys(e){ 
+  e.preventDefault()
+  switch (true){
+    case (e.target.value === "name"):
+      console.log("name selected")
+      fetchToys("name")
+      break
+    case (e.target.value === "likes"):
+      console.log("likes selected")
+      fetchToys("likes")
+      break
+  }
+}
 
 function handleClicks (e) {
   switch (true) {
@@ -132,10 +150,8 @@ function createToy(e) {
 }
 
 
-
-
-function fetchToys(){
-  fetch(fetchURL)
+function fetchToys(sortOption){
+  fetch(`${fetchURL}?_sort=${sortOption}&_order=asc`)
   .then(response => response.json())
   .then(toyData => toyData.forEach(toy => renderToy(toy)))
 }
@@ -206,4 +222,19 @@ function renderToy(toy){
 }
 
 
-fetchToys()
+// Init
+
+function makeDropdown(){
+const sortDiv = document.createElement('div')
+sortDiv.className = 'sort'
+const dropdown = document.createElement('select')
+dropdown.innerHTML = `
+<option value="name" selected= "selected">Name</option>
+<option value="likes">Likes</option>
+`
+sortDiv.append(dropdown)
+document.body.insertBefore(sortDiv, toyCollection)
+}
+
+fetchToys("name")
+

@@ -18,7 +18,10 @@ addBtn.addEventListener("click", () => {
   }
 });
 
+
 newToyForm.addEventListener('submit', createToy)
+
+toyCollection.addEventListener('submit', editToy)
 
 toyCollection.addEventListener('click', handleClicks)
 
@@ -31,12 +34,42 @@ function handleClicks (e) {
       deleteToy(e)
       break
     case (e.target.className === "edit-btn"):
-      openEditForm(e)
+      toggleEditForm(e)
       break
   }
 }
 
-function openEditForm(e) {
+function editToy(e) {
+  e.preventDefault()
+  const card = e.target.closest('.card')
+  const id = card.dataset.id
+  const toyName = card.querySelector('h2')
+  const toyImage = card.querySelector('img')
+
+  const name = e.target[0].value
+  const image = e.target[1].value
+
+  const editedToy = {name, image}
+  console.log(editedToy)
+
+  fetch(`${fetchURL}/${id}`, {
+      method: "PATCH",
+      headers : {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(editedToy)
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log(data)
+    toyName.textContent = data.name
+    toyImage.src = data.image
+  })
+  toggleEditForm(e)
+}
+
+function toggleEditForm(e) {
   const card = e.target.closest('.card')
   let editDiv = card.querySelector('.edit-form-div')
   const open = "rotateX(0deg)"
@@ -50,7 +83,7 @@ function increaseLikes(e) {
   const card = e.target.closest('.card')
   const id = card.dataset.id
   const likesDisplay = card.querySelector('p')
-  const likesCount = parseInt(e.target.previousElementSibling.textContent)
+  const likesCount = parseInt(likesDisplay.textContent)
 
   fetch(`${fetchURL}/${id}`, {
     method: "PATCH",
@@ -61,7 +94,7 @@ function increaseLikes(e) {
     body: JSON.stringify({"likes": likesCount + 1})
   })
   .then(response => response.json())
-  .then(data => likesDisplay.innerText = `${data.likes} Likes`)
+  .then(data => likesDisplay.textContent = `${data.likes} Likes`)
 }
 
 function deleteToy(e) {

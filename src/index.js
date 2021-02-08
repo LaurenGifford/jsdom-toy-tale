@@ -38,7 +38,7 @@ function sortToys(e){
       break
     case (e.target.value === "likes"):
       console.log("likes selected")
-      fetchToys("likes")
+      fetchToys("likes", "desc")
       break
   }
 }
@@ -150,10 +150,13 @@ function createToy(e) {
 }
 
 
-function fetchToys(sortOption){
-  fetch(`${fetchURL}?_sort=${sortOption}&_order=asc`)
+function fetchToys(sortOption, order = "asc"){
+  fetch(`${fetchURL}?_sort=${sortOption}&_order=${order}`)
   .then(response => response.json())
-  .then(toyData => toyData.forEach(toy => renderToy(toy)))
+  .then(toyData => {
+    Array.from(toyCollection.children).forEach( child => child.remove() )
+    toyData.forEach( toy => renderToy(toy) )
+  })
 }
 
 function renderToy(toy){

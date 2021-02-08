@@ -20,27 +20,48 @@ addBtn.addEventListener("click", () => {
 
 newToyForm.addEventListener('submit', createToy)
 
-toyCollection.addEventListener('click', increaseLikes)
+toyCollection.addEventListener('click', handleClicks)
 
-function increaseLikes(e) {
-  if (e.target.className === "like-btn" ){
-    const card = e.target.closest('.card')
-    const likesDisplay = card.querySelector('p')
-    const id = card.dataset.id
-    const likesCount = parseInt(e.target.previousElementSibling.textContent)
-
-    fetch(`${fetchURL}/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({"likes": likesCount + 1})
-    })
-    .then(response => response.json())
-    .then(data => likesDisplay.innerText = `${data.likes} Likes`)
+function handleClicks (e) {
+  switch (true) {
+    case (e.target.className === "like-btn"):
+      increaseLikes(e)
+      break
+    case (e.target.className === "delete-btn"):
+      deleteToy(e)
+      break
+    // case (e.target.className === "edit-btn"):
+    //   editToy(e)
+    //   break
   }
 }
+
+function increaseLikes(e) {
+  const card = e.target.closest('.card')
+  const id = card.dataset.id
+  const likesDisplay = card.querySelector('p')
+  const likesCount = parseInt(e.target.previousElementSibling.textContent)
+
+  fetch(`${fetchURL}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({"likes": likesCount + 1})
+  })
+  .then(response => response.json())
+  .then(data => likesDisplay.innerText = `${data.likes} Likes`)
+}
+
+function deleteToy(e) {
+  const card = e.target.closest('.card')
+  const id = card.dataset.id
+
+  fetch(`${fetchURL}/${id}`, { method: "DELETE" } )
+  .then( card.remove() )
+}
+
 
 
 function createToy(e) {
@@ -81,6 +102,36 @@ function renderToy(toy){
     toyDiv.className = "card"
     toyDiv.dataset.id = toy.id
 
+    //////// EDIT FORM ///////////////
+    // const editFormDiv = document.createElement("div")
+    // editFormDiv.className = "edit-form-div"
+
+    // const editForm = document.createElement("form")
+    // editForm.className = "edit-form"
+
+    // const heading = document.createElement("h3")
+    // heading.textContent = "Edit This Toy!"
+
+    // const editName = document.createElement("input")
+    // editName.type = "text"
+    // editName.name = "name"
+    // editName.value = toy.name
+    // editName.classList.add('input-text', 'small')
+
+    // const editImage = document.createElement("input")
+    // editImage.type = "text"
+    // editImage.name = "image"
+    // editImage.value = toy.image
+    // editImage.classList.add('input-text', 'small')
+
+    // const editSubmit = document.createElement("input")
+    // editSubmit.type = "submit"
+    // editSubmit.name = "submit"
+    // editSubmit.value = "Save"
+
+    // editForm.append(heading, editName, editImage, editSubmit)
+    // editFormDiv.append(editForm)
+    /////////////////////////////////////
     const toyName = document.createElement('h2')
     toyName.textContent = `${toy.name}`
 
@@ -95,7 +146,19 @@ function renderToy(toy){
     likeBtn.textContent = "Like <3"
     likeBtn.className = "like-btn"
 
-    toyDiv.append(toyName, toyImg, toyP, likeBtn)
+    // const editBtn = document.createElement('button')
+    // editBtn.textContent = "Edit"
+    // editBtn.className = "edit-btn"
+    
+    const deleteBtn = document.createElement('button')
+    deleteBtn.textContent = "Delete 😢"
+    deleteBtn.className = "delete-btn"
+
+    const buttonDiv = document.createElement("div")
+    buttonDiv.className = "button-div"
+    // editFormDiv, buttonDiv
+    // buttonDiv.append(likeBtn, editBtn, deleteBtn)
+    toyDiv.append(toyName, toyImg, toyP, likeBtn,deleteBtn)
     toyCollection.append(toyDiv)
 }
 
